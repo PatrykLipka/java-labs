@@ -44,7 +44,6 @@ public class PreferencesTest {
         try {
           preferences.setHobbies(hobbies);
           fail("An exception should be thrown");
-        } catch (Exception e) {
-        }
+        } catch (Exception e) {}
     }
 }
