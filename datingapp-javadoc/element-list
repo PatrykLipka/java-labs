@@ -1,7 +1,0 @@
-module:datingapp
-pl.polsl.lab.datingapp
-pl.polsl.lab.datingapp.controller
-pl.polsl.lab.datingapp.model.entities
-pl.polsl.lab.datingapp.model.enums
-pl.polsl.lab.datingapp.model.exceptions
-pl.polsl.lab.datingapp.model.repositories

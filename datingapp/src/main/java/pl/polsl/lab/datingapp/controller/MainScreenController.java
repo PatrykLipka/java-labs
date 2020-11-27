@@ -11,6 +11,7 @@ import pl.polsl.lab.datingapp.model.entities.Preferences;
 import pl.polsl.lab.datingapp.model.enums.Gender;
 import pl.polsl.lab.datingapp.model.enums.Hobby;
 import pl.polsl.lab.datingapp.model.repositories.PersonRepository;
+import pl.polsl.lab.datingapp.view.DateResultsDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,37 +101,42 @@ public class MainScreenController {
      * @param event button event
      */
     @FXML private void handleLookForDateButton(ActionEvent event) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         if(isAllValuesFilled()) {
             try {
-                alert.setTitle("Date found!");
-                alert.setHeaderText("Your date details:");
+                Preferences preferences = new Preferences(
+                        maxAgeDiffSpinner.getValue(),
+                        prefGenderChoiceBox.getValue(),
+                        getSelectedHobbies());
 
-                Person person = new Person();
-                person.setFirstName(firstNameTextField.getText());
-                person.setLastName(lastNameTextField.getText());
-                person.setDateOfBirth(birthdayDateTextField.getText());
-                person.setGender(genderChoiceBox.getValue());
+                Person person = new Person(
+                        firstNameTextField.getText(),
+                        lastNameTextField.getText(),
+                        genderChoiceBox.getValue(),
+                        birthdayDateTextField.getText(),
+                        preferences);
 
-                Preferences preferences = new Preferences();
-                preferences.setAgeDifference(maxAgeDiffSpinner.getValue());
-                preferences.setHobbies(getSelectedHobbies());
-                preferences.setInterestGender(prefGenderChoiceBox.getValue());
+                List<Person> resultList = new ArrayList<>();
+                resultList.add(personController.findADate(person));
 
-                person.setPreferences(preferences);
-                alert.setContentText(personController.findADate(person).toString());
+                DateResultsDialog dialog = new DateResultsDialog(resultList);
+                dialog.show();
             } catch (Exception e) {
-                alert.setAlertType(Alert.AlertType.ERROR);
-                alert.setTitle("Error!");
-                alert.setHeaderText("An error occurred");
-                alert.setContentText(e.getMessage());
+                showErrorAlert(e.getMessage());
             }
         } else {
-            alert.setAlertType(Alert.AlertType.ERROR);
-            alert.setTitle("Error!");
-            alert.setHeaderText("Values missing error");
-            alert.setContentText("Fill all values and try again!");
+            showErrorAlert("Fill all values and try again!");
         }
+    }
+
+    /**
+     * Show error alert
+     * @param message messege which will be shown
+     */
+    void showErrorAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error!");
+        alert.setHeaderText("An error occurred");
+        alert.setContentText(message);
         alert.showAndWait();
     }
 }

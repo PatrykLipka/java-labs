@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 
 /**
  * Person entity class
- * @version 0.0.1
+ * @version 0.0.2
  * @author Tomasz Knura
  */
 public class Person {
@@ -57,6 +57,24 @@ public class Person {
         this.gender = gender;
         this.dateOfBirth = dateOfBirth;
         this.preferences = preferences;
+    }
+
+    /**
+     * Argument constructor
+     * @param firstName first name of a person
+     * @param lastName last name of a person
+     * @param gender gender of a person
+     * @param dateOfBirth date of birth of a person as a String object
+     * @param preferences preferences of a person
+     */
+    public Person(String firstName, String lastName, Gender gender, String dateOfBirth, Preferences preferences)
+            throws InvalidDateFormatException {
+        this.id = idProvider++;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.preferences = preferences;
+        setDateOfBirth(dateOfBirth);
     }
 
     /**
